@@ -2,9 +2,10 @@
 
 namespace Modules\Media\Entities;
 
-use Dimsav\Translatable\Translatable;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Model;
+
+use Astrotomic\Translatable\Translatable;
 use Modules\Core\Traits\NamespacedEntity;
 use Modules\Media\Helpers\FileHelper;
 use Modules\Media\Image\Facade\Imagy;
