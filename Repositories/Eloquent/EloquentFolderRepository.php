@@ -2,7 +2,9 @@
 
 namespace Modules\Media\Repositories\Eloquent;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Collection;
+
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 use Modules\Media\Entities\File;
 use Modules\Media\Events\FolderIsCreating;
@@ -126,7 +128,7 @@ class EloquentFolderRepository extends EloquentBaseRepository implements FolderR
 
     private function getNewPathFor(string $filename, File $folder)
     {
-        return $this->removeDoubleSlashes($folder->path->getRelativeUrl() . '/' . str_slug($filename));
+        return $this->removeDoubleSlashes($folder->path->getRelativeUrl() . '/' . Str::slug($filename));
     }
 
     private function removeDoubleSlashes(string $string) : string
@@ -143,11 +145,11 @@ class EloquentFolderRepository extends EloquentBaseRepository implements FolderR
         if (array_key_exists('parent_id', $data)) {
             $parent = $this->findFolder($data['parent_id']);
             if ($parent !== null) {
-                return $parent->path->getRelativeUrl() . '/' . str_slug(array_get($data, 'name'));
+                return $parent->path->getRelativeUrl() . '/' . Str::slug(array_get($data, 'name'));
             }
         }
 
-        return config('asgard.media.config.files-path') . str_slug(array_get($data, 'name'));
+        return config('asgard.media.config.files-path') . Str::slug(array_get($data, 'name'));
     }
 
     /**
