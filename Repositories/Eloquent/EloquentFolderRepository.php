@@ -3,6 +3,7 @@
 namespace Modules\Media\Repositories\Eloquent;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Collection;
 
 use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
@@ -36,10 +37,10 @@ class EloquentFolderRepository extends EloquentBaseRepository implements FolderR
     public function create($data)
     {
         $data = [
-            'filename' => array_get($data, 'name'),
+            'filename' => Arr::get($data, 'name'),
             'path' => $this->getPath($data),
             'is_folder' => true,
-            'folder_id' => array_get($data, 'parent_id'),
+            'folder_id' => Arr::get($data, 'parent_id'),
         ];
         event($event = new FolderIsCreating($data));
         $folder = $this->model->create($event->getAttributes());
@@ -56,9 +57,9 @@ class EloquentFolderRepository extends EloquentBaseRepository implements FolderR
             'path' => $model->path,
         ];
         $formattedData = [
-            'filename' => array_get($data, 'name'),
+            'filename' => Arr::get($data, 'name'),
             'path' => $this->getPath($data),
-            'parent_id' => array_get($data, 'parent_id'),
+            'parent_id' => Arr::get($data, 'parent_id'),
         ];
 
         event($event = new FolderIsUpdating($formattedData));
@@ -145,11 +146,11 @@ class EloquentFolderRepository extends EloquentBaseRepository implements FolderR
         if (array_key_exists('parent_id', $data)) {
             $parent = $this->findFolder($data['parent_id']);
             if ($parent !== null) {
-                return $parent->path->getRelativeUrl() . '/' . Str::slug(array_get($data, 'name'));
+                return $parent->path->getRelativeUrl() . '/' . Str::slug(Arr::get($data, 'name'));
             }
         }
 
-        return config('asgard.media.config.files-path') . Str::slug(array_get($data, 'name'));
+        return config('asgard.media.config.files-path') . Str::slug(Arr::get($data, 'name'));
     }
 
     /**

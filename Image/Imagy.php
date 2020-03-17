@@ -3,6 +3,7 @@
 namespace Modules\Media\Image;
 
 use GuzzleHttp\Psr7\Stream;
+use Illuminate\Support\Arr;
 use Illuminate\Contracts\Filesystem\Factory;
 use Intervention\Image\ImageManager;
 use Modules\Media\Entities\File;
@@ -117,7 +118,7 @@ class Imagy
                 $image = $this->imageFactory->make($manipulation)->handle($image, $options);
             }
 
-            $image = $image->stream(pathinfo($path, PATHINFO_EXTENSION), array_get($thumbnail->filters(), 'quality', 90));
+            $image = $image->stream(pathinfo($path, PATHINFO_EXTENSION), Arr::get($thumbnail->filters(), 'quality', 90));
             $this->writeImage($filename, $image);
         }
     }
